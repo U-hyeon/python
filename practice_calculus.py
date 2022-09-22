@@ -29,3 +29,19 @@ print((3 > 0) | (3 > 5))
 
 print(5 > 4 > 3) # True
 print(5 > 4 > 7) # False
+
+print("number")
+number = 2+3*4
+print(number)
+number = number + 2
+print(number)
+number += 2
+print(number)
+number *= 2
+print(number)
+number /= 2
+print(number)
+number -= 2
+print(number)
+number %= 5
+print(number)
