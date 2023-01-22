@@ -14,11 +14,11 @@ class AttackUnit:
         print("{0} 유닛이 생성 되었습니다.".format(self.name))
         print("체력 {0}, 공격력 {1}".format(self.hp, self.damage))
 
-    def attack(self, location):
+    def attack(self, location): # method (class 내부 함수)
         print("{0} : {1} 방향으로 적군을 공격 합니다. [공격력 {2}]"\
             .format(self.name, location, self.damage))
 
-    def damaged(self, damage):
+    def damaged(self, damage): # method
         print("{0} : {1} 데미지를 입었습니다.".format(self.name, damage))
         self.hp -= damage
         print("{0} : 현재 체력은 {1} 입니다.".format(self.name, self.hp))
