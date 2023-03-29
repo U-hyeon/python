@@ -41,13 +41,17 @@ librosa.output.write_wav(result_file_name, edited_data, sample_rate)
 '''
 
 def cos_sim(A, B): # (numpy, numpy, int, int)
-    up = np.dot(A, B.T) # B.T 는 B의 전치행렬
-    abs_a = np.linalg.norm(A)
-    abs_b = np.linalg.norm(B)
-    print("A, B = ", A, ", ", B)
-    down = abs_a * abs_b
-    print("down = ", down)
-    r = up/down
+    r = -1
+    for i in range( -(A.shape[1]), A.shape[1] ):
+        A_shift = np.roll(A,i,axis=1)
+        A_flat = A_shift.flatten()
+        B_flat = B.flatten()
+        up = np.dot(A_flat, B_flat)
+        abs_a = np.linalg.norm(A)
+        abs_b = np.linalg.norm(B)
+        down = abs_a * abs_b
+        temp = up/down
+        if temp > r : r = temp
     return r
 
 os.chdir("/Users/jeon-uhyeon/Desktop/final_project/dataset")
@@ -85,9 +89,23 @@ print("MFCC shape : ", mfcc2.shape)
 print("MFCC : \n", mfcc2)
 librosa.display.specshow(mfcc2, sr=sr2, hop_length=hop_length, x_axis='time')
 plt.show()
+# print("flatten")
+# flat1 = mfcc1.flatten()
+# flat2 = mfcc2.flatten()
+# print("mfcc1 : ", flat1)
+# print("mfcc2 : ", flat2)
+# dot_p = np.dot(flat1, flat2)
+# print("dot : ", dot_p)
+# abs1 = np.linalg.norm(flat1)
+# abs2 = np.linalg.norm(flat2)
+# print("abs1 : ", abs1)
+# print("abs2 : ", abs2)
+print("similarity : ", cos_sim(mfcc1, mfcc2))
 
-print("---------cosine similarity---------")
-print("cos_sim(A,B) = ", cos_sim(mfcc1, mfcc2))
+
+# print("---------cosine similarity---------")
+# temp = cos_sim(mfcc1, mfcc2)
+# print("cos_sim(A,B) = ", temp)
 
 # And the first-order differences (delta features)
 mfcc1_delta = librosa.feature.delta(mfcc1)
