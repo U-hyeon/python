@@ -1,6 +1,38 @@
 (230518)
 이진탐색을 통해 분할지점을 결정하고 분할을 시도하였을때 한쪽의 파일이 원본데이터를 그대로 유지하는 현상 발생.
-->이진탐색이 아닌 순차적 탐색을 통해 시도하여 해결
+-> 이진탐색이 아닌 순차적 탐색을 통해 시도하여 해결
 (230524)
 분할지점 탐색개선 : 
-->두 파일 모두 이진탐색이 아닌 한쪽만 이진탐색
+-> 두 파일 모두 이진탐색이 아닌 한쪽만 이진탐색
+(230603)
+total_sim 3중루프 중 B_point, r_B_point 갱신조건 수정:
+-> B 프레임추가 루프에서 유사도가 기준보다 높다면 B_point 갱신
+-> A 이진탐색 루프에서 B_point 값을 이용해 r_B_point 갱신
+total_sim 변수명 수정 :
+-> r >> r_sim
+-> temp_stretch >> temp_sim_stretch
+병렬프로그래밍 적용 :
+-> cos_sim 함수에 각 time shift 버전 유사도 계산을 병렬프로그래밍을 통해 수행
+(230604)
+total_sim 비교파일 직선적 탐색수행에 따라 B_point 초기화 변경
+-> [수정 전] B_point = int(B.shape[1] / 2)
+-> [수정 후] B_point = 0
+본문 작업소요시간 측정 동작추가
+-> start 변수 활용
+병렬프로그래밍 적용 :
+-> total_sim 3중루프중 B파일 4프레임씩 추가로 포함하는 부분집합들의 각 연산과정을 병렬프로그래밍을 통해 수행 ; SIM_time_stretch
+(230606)
+함수명 변경 : 
+-> SIM_time_stretch >> SIM_partial_B
+병렬프로그래밍 적용 :
+-> SIM_partial_B의 각 배속경우의 유사도 판단을 병렬프로그래밍을 통해 수행
+-> SIM_time_stretch
+(230610)
+total_align 수정 :
+-> 반복문 계속실행조건  if not >> if
+-> while 조건: (r_sim > BOUNDARY) 삭제, temp_A_start, temp_B_start 로 수정
+-> toggle 추가: 기준유사도 넘어갔을시 on, 이후 기준 유사도보다 낮아지면 중단
+-> temp_sim, temp_A_point, temp_B_point 변수 추가: 조건을 만족할 경우만 실제 반환값에 갱신
+-> temp_A_start, temp_B_start 갱신동작
+Half 변수들 모두 정수화: 
+-> half = int(...)
